@@ -5,16 +5,16 @@ import { getLightningDataByFilters } from "../redux-state/reducers/lightningRedu
 import MapComponent from "../components/map-component";
 import LightningDatatable from "../components/lightning-datatable";
 import BarGraph from "../components/bar-graph";
-import {filterLightningData} from "../utils/filterLightningData";
+import { filterLightningData } from "../utils/filterLightningData";
 
 class LightningPage extends React.Component {
   constructor(props) {
     // passing props into super will allow us to access props using ".this"
     super(props);
     this.state = {
-      dataTableData:[],
-      mapData:[]
-    }
+      dataTableData: [],
+      mapData: [],
+    };
   }
 
   // An react life cycle method , this will be called once at the start of page load
@@ -27,15 +27,14 @@ class LightningPage extends React.Component {
       isCloudToCloud: "true",
     };
     const lightningDataBulk = await getLightningDataService();
-    const lightningData = await filterLightningData(lightningDataBulk , filters);
-    debugger;
+    const lightningData = await filterLightningData(lightningDataBulk, filters);
     let dataTableData = [];
-    for(let data of lightningData) {
+    for (let data of lightningData) {
       dataTableData.push(data.properties);
     }
     this.setState({
-      dataTableData:dataTableData,
-      mapData:lightningData
+      dataTableData: dataTableData,
+      mapData: lightningData,
     });
     await this.props.setLightningDataByFilters(lightningData);
   }
@@ -53,18 +52,33 @@ class LightningPage extends React.Component {
       <div className="Lightning" id="wrapper">
         <div className="map-div">
           <table>
-           <tbody>
-           <tr></tr>
-            <tr>
-              <td><MapComponent positions={this.state.mapData }></MapComponent></td>
-              <td><LightningDatatable dataSource={this.state.dataTableData}></LightningDatatable></td>
-            </tr>
-            <tr>
-              <td>
-              <BarGraph></BarGraph>
-              </td>
-            </tr>
-           </tbody>
+            <tbody>
+              <tr>
+                <td>
+                  <div className="card">
+                    <MapComponent positions={this.state.mapData}></MapComponent>
+                  </div>
+                </td>
+                <td>
+                  <div className="card">
+                    <LightningDatatable
+                      dataSource={this.state.dataTableData}
+                    ></LightningDatatable>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                <div className="card">
+                <BarGraph graphData={this.state.dataTableData}></BarGraph>
+              </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

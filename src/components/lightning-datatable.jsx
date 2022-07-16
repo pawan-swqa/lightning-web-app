@@ -26,9 +26,8 @@ function LightningDatatable(props) {
   ];
   return (
       <div style={{
-        width: 600, padding: 30
+        width: 600,
       }}>
-          <h4>Lightning Datatable</h4>
           <Table pagination={{pageSize:5}} dataSource={props.dataSource} columns={columns} rowKey="intensity"/>
       </div>
   );

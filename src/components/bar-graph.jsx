@@ -1,46 +1,24 @@
-import React, { Component } from 'react'
-import Plot from 'react-plotly.js';
-class BarGraph extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: [], layout: {}, frames: [], config: {} };
-  }
-  componentDidMount() {
-    let properties = [];
-    fetch("https://raw.githubusercontent.com/meteotest/frontend-coding-challenge/master/data.geojson").then(res => {
-      res.json().then(response => {
-        properties = []
-        for (let data of response.features) {
-          properties.push(data.properties)
-        }
-        this.setState({ data: properties })
-      })
-    })
-  }
-  transformData(data) {
-    let plot_data = [];
-    let x = [];
-    let y = [];
-    data.map(each => {
-      x.push(each.time)
-      y.push(each.time)
-    })
-    plot_data['x'] = x
-    plot_data['y'] = y
-    return plot_data
-  }
-  render() {
+import React from "react";
+import Plot from "react-plotly.js";
+import { graphXYHelper } from "../utils/helpers";
+function BarGraph(props) {
+  const data = graphXYHelper(props.graphData);
     return (
       <Plot
-        data={[{
-          type: 'histogram',
-          x: this.transformData(this.state.data)['x'],
-          y: this.transformData(this.state.data)['y'],
-          marker:{color:'grey'}
-        }]}
-        layout = {{width:1000,height:300,hovermode:'closest'}}
+        data={[
+          {
+            type: "bar",
+            x: data["x"],
+            y: data["y"],
+            marker: { color: "black" },
+            mode: 'markers',
+            hoverinfo:"x+y"
+          },
+        ]}
+        layout={
+          { width: "50%", height: 300, hovermode: "closest" , autosize: false, }
+        }
       />
-    )
-  }
+    );
 }
-export default BarGraph
+export default BarGraph;
