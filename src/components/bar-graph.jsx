@@ -12,11 +12,10 @@ function BarGraph(props) {
             y: data["y"],
             marker: { color: "black" },
             mode: 'markers',
-            hoverinfo:"x+y"
           },
         ]}
         layout={
-          { width: "50%", height: 300, hovermode: "closest" , autosize: false, }
+          { width: 1500, height: 400, autosize: true, }
         }
       />
     );

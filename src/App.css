@@ -1,8 +1,55 @@
-.leaflet-container{
+.leaflet-container {
   width: 120vh;
-  height:60vh;
+  height: 60vh;
 }
 
-.map-div{
+.map-div {
   padding: 5px;
+  margin-top: 1rem;
+}
+
+.top-nav-bar {
+  width: 100%;
+  height: 3rem;
+  background: grey;
+  margin-top: 1rem;
+}
+
+.inputs{
+  padding: 10px;
+}
+
+.input{
+  padding: 5px;
+}
+
+.markers{
+  padding-right: 20px;
+}
+
+/* .red .rectangle {
+  background-color: red;
+}
+
+.orange .rectangle {
+  background-color: orange;
+}
+
+.green .rectangle {
+  background-color: green;
+} */
+
+.rectangle {
+  height: 5px;
+  width: 10px;
+}
+
+.loader {
+  text-align: center;
+  background-color: #98B4D4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }

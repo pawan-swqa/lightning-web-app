@@ -21,11 +21,11 @@ const filterLightningData = async (data , filters) => {
     }
    }
    for(let l=0; l < filterData2.length; l++) {
-       if(filterData2[l].isCloudToCloud === filters.isCloudToCloud) {
+       if(filterData2[l].properties.isCloudToCloud === filters.isCloudToCloud) {
            finalFilterData.push(filterData2[l])
        }
    }
-   return filterData2;
+   return finalFilterData;
 };
 
 export { filterLightningData };
