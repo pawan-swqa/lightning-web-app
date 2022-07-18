@@ -14,6 +14,7 @@ import {
 import ThunderLogo from "@mui/icons-material/Thunderstorm";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 function TopNavBar(props) {
   const fromDateConverted = new Date(props.filters.fromDate);
   const toDateConverted = new Date(props.filters.todate);
@@ -28,26 +29,30 @@ function TopNavBar(props) {
     props.refreshData(data);
   }
   return (
-    <AppBar position="static" color="inherit">
+    <AppBar position="static" color="">
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" aria-label="logo">
+        <IconButton size="large" edge="start" color="primary" aria-label="logo">
           <ThunderLogo />
         </IconButton>
         <Typography variant="h6" component="div">
           Lightning app
         </Typography>
         <Box zIndex={1001} sx={{ width: 200, height: 50, paddingLeft: 4 }}>
-          <Typography>From:</Typography>
-          <DatePicker className="datePicker"
+          <Typography sx={{ fontSize: 13, color: "#808080" }}>From</Typography>
+          <DatePicker
+            startIcon={<CalendarMonthIcon />}
+            className="datePicker"
             selected={startDate}
             onChange={(date) => {
               setStartDate(date);
             }}
           />
         </Box>
-        <Box zIndex={1001} sx={{ width: 200, height: 50 }}>
-          <Typography>To:</Typography>
+        <Box zIndex={1001} sx={{ width: 200, height: 50, paddingLeft: 2 }}>
+          <Typography sx={{ fontSize: 13, color: "#808080" }}>To</Typography>
           <DatePicker
+            startIcon={<CalendarMonthIcon />}
+            className="datePicker"
             selected={endDate}
             onChange={(date) => {
               setEndDate(date);
@@ -88,37 +93,37 @@ function TopNavBar(props) {
             setCloudToCloud(e.target.checked);
           }}
           defaultChecked
-          color="default"
+          color="primary"
         />
         <Button
-        startIcon={<FilterAltIcon/>}
-        variant="contained"
-        sx={{marginLeft:4,float:"right"}}
-         onClick={() => {
-          const newFilters = {
-            fromDate: startDate,
-            todate: endDate,
-            intensityFrom: intensityFrom,
-            intensityTo: intensityTo,
-            isCloudToCloud: isCloudToCloud,
-          };
-          sendProps(newFilters);
-        }}>Filter</Button>
-      <Button variant="outlined"
-      startIcon={<RestartAltIcon/>}
-      sx={{marginLeft:4,float:"right"}}
-      onClick={() => {
-        const filters = {
-            fromDate: "2010-06-09T15:44:04Z",
-            todate: "2022-06-10T12:44:04Z",
-            intensityFrom: "4",
-            intensityTo: "12",
-            isCloudToCloud: true,
-          }
-          sendProps(filters);
-      }}>
-        Reset
-      </Button>
+          startIcon={<FilterAltIcon />}
+          variant="contained"
+          sx={{ marginLeft: 4, float: "right" }}
+          onClick={() => {
+            const newFilters = {
+              fromDate: startDate,
+              todate: endDate,
+              intensityFrom: intensityFrom,
+              intensityTo: intensityTo,
+              isCloudToCloud: isCloudToCloud,
+            };
+            sendProps(newFilters);
+          }}>Filter</Button>
+        <Button variant="outlined"
+          startIcon={<RestartAltIcon />}
+          sx={{ marginLeft: 4, float: "right" }}
+          onClick={() => {
+            const filters = {
+              fromDate: "2010-06-09T15:44:04Z",
+              todate: "2022-06-10T12:44:04Z",
+              intensityFrom: "4",
+              intensityTo: "12",
+              isCloudToCloud: true,
+            }
+            sendProps(filters);
+          }}>
+          Reset
+        </Button>
       </Toolbar>
     </AppBar>
   );
