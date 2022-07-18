@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    mainData : []
-}
+  mainData: [],
+};
+
 const lightningSlice = createSlice({
-    name:'lightning',
-    initialState:initialState,
-    reducers:{
-        getLightningDataByFilters: (state , action) => {
-            state.mainData = action.payload;
-        }
-    }
+  name: "lightning",
+  initialState: initialState,
+  reducers: {
+    getLightningDataByFilters: (state, action) => {
+      state.mainData = action.payload;
+    },
+  },
 });
 
 export const { getLightningDataByFilters } = lightningSlice.actions;

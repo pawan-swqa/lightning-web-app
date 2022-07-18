@@ -12,19 +12,22 @@ import {
   Button,
 } from "@mui/material";
 import ThunderLogo from "@mui/icons-material/Thunderstorm";
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 function TopNavBar(props) {
   const fromDateConverted = new Date(props.filters.fromDate);
   const toDateConverted = new Date(props.filters.todate);
   const [startDate, setStartDate] = useState(fromDateConverted);
   const [endDate, setEndDate] = useState(toDateConverted);
-  const [intensityFrom, setIntensityFrom] = useState(props.filters.intensityFrom);
+  const [intensityFrom, setIntensityFrom] = useState(
+    props.filters.intensityFrom
+  );
   const [intensityTo, setIntensityTo] = useState(props.filters.intensityTo);
-  const [isCloudToCloud, setCloudToCloud] = useState(props.filters.isCloudToCloud);
-  useEffect(() => {
-  })
+  const [isCloudToCloud, setCloudToCloud] = useState(
+    props.filters.isCloudToCloud
+  );
+  useEffect(() => {});
   function sendProps(data) {
     props.refreshData(data);
   }
@@ -108,8 +111,12 @@ function TopNavBar(props) {
               isCloudToCloud: isCloudToCloud,
             };
             sendProps(newFilters);
-          }}>Filter</Button>
-        <Button variant="outlined"
+          }}
+        >
+          Filter
+        </Button>
+        <Button
+          variant="outlined"
           startIcon={<RestartAltIcon />}
           sx={{ marginLeft: 4, float: "right" }}
           onClick={() => {
@@ -119,9 +126,10 @@ function TopNavBar(props) {
               intensityFrom: "4",
               intensityTo: "12",
               isCloudToCloud: true,
-            }
+            };
             sendProps(filters);
-          }}>
+          }}
+        >
           Reset
         </Button>
       </Toolbar>

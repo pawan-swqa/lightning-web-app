@@ -1,18 +1,46 @@
 import "../App.css";
-import { MapContainer, TileLayer, Popup, CircleMarker } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Popup,
+  CircleMarker,
+  FeatureGroup,
+  Polygon,
+} from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import { EditControl } from "react-leaflet-draw";
+import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
 
 function MapComponent(props) {
+  const _created = (e) => console.log(e);
+
+  // function gg() {
+  //   Polygon.getBounds().contains()
+  // }
   return (
     <MapContainer center={[4.7804, 46.5313]} zoom={10} scrollWheelZoom={true}>
+      <FeatureGroup>
+        <EditControl
+          position="topright"
+          onCreated={_created}
+          draw={{
+            rectangle: false,
+            circle: false,
+            circlemarker: false,
+            marker: false,
+            polyline:false
+          }}
+        ></EditControl>
+      </FeatureGroup>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MarkerClusterGroup chunkedLoading>
-        {props.positions.map((data , i) => (
+        {props.positions.map((data, i) => (
           <CircleMarker
-          key={`marker_${i}`}
+            key={`marker_${i}`}
             color={
               data.properties.intensity >= 0 && data.properties.intensity <= 5
                 ? "darkgreen"

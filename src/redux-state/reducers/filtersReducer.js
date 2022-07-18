@@ -9,6 +9,7 @@ const initialState = {
     isCloudToCloud: true,
   },
 };
+
 const filtersSlice = createSlice({
   name: "filters",
   initialState: initialState,
