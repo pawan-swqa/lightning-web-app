@@ -2,7 +2,6 @@
 import React from 'react'
 import "antd/dist/antd.css";
 import { Table } from 'antd';
-import {useState,useEffect} from 'react'
 import moment from 'moment';
 function LightningDatatable(props) {
   const columns = [

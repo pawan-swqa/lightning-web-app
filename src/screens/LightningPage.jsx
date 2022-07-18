@@ -6,7 +6,7 @@ import {setFilters} from "../redux-state/reducers/filtersReducer"
 import MapComponent from "../components/map-component";
 import LightningDatatable from "../components/lightning-datatable";
 import BarGraph from "../components/bar-graph";
-import { filterLightningData } from "../utils/filterLightningData";
+import { filterLightningData , filterHighLightedData } from "../utils/filterLightningData";
 import TopNavBar from "../components/top-nav-bar";
 import { SyncLoader } from "react-spinners";
 
@@ -21,6 +21,7 @@ class LightningPage extends React.Component {
     };
 
     this.setComponentData = this.setComponentData.bind(this);
+    this.setHignlightedData = this.setHignlightedData.bind(this);
   }
 
   // An react life cycle method , this will be called once at the start of page load
@@ -39,6 +40,7 @@ class LightningPage extends React.Component {
   }
 
   async setComponentData(filters) {
+    let dataTableData = [];
     this.setState({
       isLoading: true,
     });
@@ -46,13 +48,31 @@ class LightningPage extends React.Component {
     const lightningDataBulk = await getLightningDataService();
     const lightningData = await filterLightningData(lightningDataBulk, filters);
     await this.props.setLightningDataByFilters(lightningData);
-    let dataTableData = [];
     for (let data of lightningData) {
       dataTableData.push(data.properties);
     }
     this.setState({
       dataTableData: dataTableData,
       mapData: lightningData,
+      isLoading: false,
+    });
+  }
+
+  async setHignlightedData(dates) {
+    let dataTableData = [];
+    this.setState({
+      isLoading: true,
+    });
+    const date = new Date(dates[0]);
+    const lightningDataBulk = await getLightningDataService();
+    const filteredData = await filterHighLightedData(lightningDataBulk , date);
+    await this.props.setLightningDataByFilters(filteredData);
+    for (let data of filteredData) {
+      dataTableData.push(data.properties);
+    }
+    this.setState({
+      dataTableData: dataTableData,
+      mapData: filteredData,
       isLoading: false,
     });
   }
@@ -103,6 +123,7 @@ class LightningPage extends React.Component {
                       <div className="card">
                         <BarGraph
                           graphData={this.state.dataTableData}
+                          setHignlightedData={this.setHignlightedData}
                         ></BarGraph>
                       </div>
                     </td>

@@ -10,8 +10,9 @@ function MapComponent(props) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MarkerClusterGroup chunkedLoading>
-        {props.positions.map((data) => (
+        {props.positions.map((data , i) => (
           <CircleMarker
+          key={`marker_${i}`}
             color={
               data.properties.intensity >= 0 && data.properties.intensity <= 5
                 ? "darkgreen"

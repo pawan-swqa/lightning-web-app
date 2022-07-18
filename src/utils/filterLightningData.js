@@ -4,7 +4,7 @@ const filterLightningData = async (data , filters) => {
     let filterData = []
     let filterData1 = []
     let filterData2 = [];
-    let finalFilterData = []
+    let finalFilterData = [];
    for(let i=0; i < data.length; i++) {
     if(Date.parse(data[i].properties.time) >= Date.parse(filters.fromDate)) {
         filterData.push(data[i]);
@@ -28,4 +28,16 @@ const filterLightningData = async (data , filters) => {
    return finalFilterData;
 };
 
-export { filterLightningData };
+const filterHighLightedData = async (data , date) => {
+    let filteredData = [];
+    const Sdate = date.setHours(0,0,0,0);
+    for(let i=0; i < data.length; i++) {
+        const Cdate = new Date(data[i].properties.time).setHours(0,0,0,0);
+        if(Cdate === Sdate) {
+            filteredData.push(data[i]);
+        }
+    }
+    return filteredData;
+}
+
+export { filterLightningData , filterHighLightedData };
