@@ -106,7 +106,17 @@ function TopNavBar(props) {
         }}>Filter</Button>
       <Button variant="outlined"
       startIcon={<RestartAltIcon/>}
-      sx={{marginLeft:4,float:"right"}}>
+      sx={{marginLeft:4,float:"right"}}
+      onClick={() => {
+        const filters = {
+            fromDate: "2010-06-09T15:44:04Z",
+            todate: "2022-06-10T12:44:04Z",
+            intensityFrom: "4",
+            intensityTo: "12",
+            isCloudToCloud: true,
+          }
+          sendProps(filters);
+      }}>
         Reset
       </Button>
       </Toolbar>

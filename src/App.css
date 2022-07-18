@@ -53,3 +53,13 @@
   width: 100%;
   height: 100vh;
 }
+
+.no-data{
+  text-align: center;
+  background-color: #98B4D4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}

@@ -2,13 +2,18 @@ import React from "react";
 import { connect } from "react-redux";
 import { getLightningDataService } from "../shared-services/lightning-service";
 import { getLightningDataByFilters } from "../redux-state/reducers/lightningReducer";
-import {setFilters} from "../redux-state/reducers/filtersReducer"
+import { setFilters } from "../redux-state/reducers/filtersReducer";
 import MapComponent from "../components/map-component";
 import LightningDatatable from "../components/lightning-datatable";
 import BarGraph from "../components/bar-graph";
-import { filterLightningData , filterHighLightedData } from "../utils/filterLightningData";
+import {
+  filterLightningData,
+  filterHighLightedData,
+} from "../utils/filterLightningData";
 import TopNavBar from "../components/top-nav-bar";
 import { SyncLoader } from "react-spinners";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { Button } from "@mui/material";
 
 class LightningPage extends React.Component {
   constructor(props) {
@@ -44,7 +49,7 @@ class LightningPage extends React.Component {
     this.setState({
       isLoading: true,
     });
-    await this.props.setDataFilters(filters)
+    await this.props.setDataFilters(filters);
     const lightningDataBulk = await getLightningDataService();
     const lightningData = await filterLightningData(lightningDataBulk, filters);
     await this.props.setLightningDataByFilters(lightningData);
@@ -65,7 +70,7 @@ class LightningPage extends React.Component {
     });
     const date = new Date(dates[0]);
     const lightningDataBulk = await getLightningDataService();
-    const filteredData = await filterHighLightedData(lightningDataBulk , date);
+    const filteredData = await filterHighLightedData(lightningDataBulk, date);
     await this.props.setLightningDataByFilters(filteredData);
     for (let data of filteredData) {
       dataTableData.push(data.properties);
@@ -85,57 +90,75 @@ class LightningPage extends React.Component {
       <div className="main">
         {this.state.isLoading ? (
           <div className="loader">
-            <SyncLoader size={30} color={'#F37A24'}></SyncLoader>
+            <SyncLoader size={30} color={"#F37A24"}></SyncLoader>
           </div>
         ) : (
           <div>
-            {!this.state.isLoading && this.state.mapData.length > 0 ?
-            <div className="Lightning" id="wrapper">
-            <TopNavBar
-              filters={this.props.filters}
-              refreshData={this.setComponentData}
-            ></TopNavBar>
-            <div className="map-div">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div className="card">
-                        <MapComponent
-                          positions={this.state.mapData}
-                        ></MapComponent>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="card">
-                        <LightningDatatable
-                          dataSource={this.state.dataTableData}
-                        ></LightningDatatable>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div className="card">
-                        <BarGraph
-                          graphData={this.state.dataTableData}
-                          setHignlightedData={this.setHignlightedData}
-                        ></BarGraph>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div> :
-          <div className="no-data">
-            <h1>No Data Found</h1>
-          </div>
-            }
+            {!this.state.isLoading && this.state.mapData.length > 0 ? (
+              <div className="Lightning" id="wrapper">
+                <TopNavBar
+                  filters={this.props.filters}
+                  refreshData={this.setComponentData}
+                ></TopNavBar>
+                <div className="map-div">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div className="card">
+                            <MapComponent
+                              positions={this.state.mapData}
+                            ></MapComponent>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="card">
+                            <LightningDatatable
+                              dataSource={this.state.dataTableData}
+                            ></LightningDatatable>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div className="card">
+                            <BarGraph
+                              graphData={this.state.dataTableData}
+                              setHignlightedData={this.setHignlightedData}
+                            ></BarGraph>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="no-data">
+                <h1>No Data Found</h1>
+                <Button
+                  variant="outlined"
+                  startIcon={<RestartAltIcon />}
+                  sx={{ marginLeft: 4, float: "right" }}
+                  onClick={() => {
+                    const filters = {
+                      fromDate: "2010-06-09T15:44:04Z",
+                      todate: "2022-06-10T12:44:04Z",
+                      intensityFrom: "4",
+                      intensityTo: "12",
+                      isCloudToCloud: true,
+                    };
+                    this.setComponentData(filters);
+                  }}
+                >
+                  Refresh page
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -146,8 +169,9 @@ class LightningPage extends React.Component {
 // Here Im Mapping Action into the components props , so that we can call action via props easily
 const mapDispatchToProps = (dispatch) => {
   return {
-    setLightningDataByFilters: (data) => dispatch(getLightningDataByFilters(data)),
-    setDataFilters: (data) => dispatch(setFilters(data))
+    setLightningDataByFilters: (data) =>
+      dispatch(getLightningDataByFilters(data)),
+    setDataFilters: (data) => dispatch(setFilters(data)),
   };
 };
 
