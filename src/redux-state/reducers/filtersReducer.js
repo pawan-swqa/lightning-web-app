@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   mainData: {
-    fromDate: "2010-06-09T15:44:04Z",
-    todate: "2022-06-10T12:44:04Z",
+    fromDate: "2022-06-09T15:44:04Z",
+    todate: "2022-06-15T12:44:04Z",
     intensityFrom: "4",
     intensityTo: "12",
     isCloudToCloud: true,
