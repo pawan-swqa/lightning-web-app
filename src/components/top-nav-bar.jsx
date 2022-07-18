@@ -97,7 +97,7 @@ function TopNavBar(props) {
         />
         <Button
           startIcon={<FilterAltIcon />}
-          variant="contained"
+          variant="outlined"
           sx={{ marginLeft: 4, float: "right" }}
           onClick={() => {
             const newFilters = {
