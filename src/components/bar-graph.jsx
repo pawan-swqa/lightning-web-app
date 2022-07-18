@@ -7,7 +7,7 @@ function BarGraph(props) {
       <Plot
         data={[
           {
-            type: "bar",
+            type: "histogram",
             x: data["x"],
             y: data["y"],
             marker: { color: "black" },
@@ -15,7 +15,7 @@ function BarGraph(props) {
           },
         ]}
         layout={
-          { width: 1500, height: 400, autosize: true, }
+          { width: 1500, height: 400,hovermode: 'closet' ,  autosize: true, }
         }
       />
     );

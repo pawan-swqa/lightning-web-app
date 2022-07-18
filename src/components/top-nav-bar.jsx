@@ -43,14 +43,14 @@ function TopNavBar(props) {
             selected={fromDateConverted}
             onChange={(date) => {
               setStartDate(date);
-              const newFilters = {
-                fromDate: date,
-                todate: endDate,
-                intensityFrom: intensityFrom,
-                intensityTo: intensityTo,
-                isCloudToCloud: isCloudToCloud,
-              };
-              sendProps(newFilters);
+            //   const newFilters = {
+            //     fromDate: date,
+            //     todate: endDate,
+            //     intensityFrom: intensityFrom,
+            //     intensityTo: intensityTo,
+            //     isCloudToCloud: isCloudToCloud,
+            //   };
+            //   sendProps(newFilters);
             }}
           />
         </Box>
@@ -60,28 +60,28 @@ function TopNavBar(props) {
             selected={toDateConverted}
             onChange={(date) => {
               setEndDate(date);
-              const newFilters = {
-                fromDate: startDate,
-                todate: date,
-                intensityFrom: intensityFrom,
-                intensityTo: intensityTo,
-                isCloudToCloud: isCloudToCloud,
-              };
-              sendProps(newFilters);
+            //   const newFilters = {
+            //     fromDate: startDate,
+            //     todate: date,
+            //     intensityFrom: intensityFrom,
+            //     intensityTo: intensityTo,
+            //     isCloudToCloud: isCloudToCloud,
+            //   };
+            //   sendProps(newFilters);
             }}
           />
         </Box>
         <TextField
           onChange={(e) => {
             setIntensityFrom(e.target.value);
-            const newFilters = {
-              fromDate: startDate,
-              todate: endDate,
-              intensityFrom: e.target.value,
-              intensityTo: intensityTo,
-              isCloudToCloud: isCloudToCloud,
-            };
-            sendProps(newFilters);
+            // const newFilters = {
+            //   fromDate: startDate,
+            //   todate: endDate,
+            //   intensityFrom: e.target.value,
+            //   intensityTo: intensityTo,
+            //   isCloudToCloud: isCloudToCloud,
+            // };
+            // sendProps(newFilters);
           }}
           id="standard-basic"
           label="Intensity From"
@@ -96,14 +96,14 @@ function TopNavBar(props) {
         <TextField
           onChange={(e) => {
             setIntensityTo(e.target.value);
-            const newFilters = {
-              fromDate: startDate,
-              todate: endDate,
-              intensityFrom: intensityFrom,
-              intensityTo: e.target.value,
-              isCloudToCloud: isCloudToCloud,
-            };
-            sendProps(newFilters);
+            // const newFilters = {
+            //   fromDate: startDate,
+            //   todate: endDate,
+            //   intensityFrom: intensityFrom,
+            //   intensityTo: e.target.value,
+            //   isCloudToCloud: isCloudToCloud,
+            // };
+            // sendProps(newFilters);
           }}
           id="standard-basic"
           label="Intensity to"
@@ -119,18 +119,30 @@ function TopNavBar(props) {
         <Checkbox
           onChange={(e) => {
             setCloudToCloud(e.target.checked);
-            const newFilters = {
-              fromDate: startDate,
-              todate: endDate,
-              intensityFrom: intensityFrom,
-              intensityTo: intensityTo,
-              isCloudToCloud: e.target.checked,
-            };
-            sendProps(newFilters);
+            // const newFilters = {
+            //   fromDate: startDate,
+            //   todate: endDate,
+            //   intensityFrom: intensityFrom,
+            //   intensityTo: intensityTo,
+            //   isCloudToCloud: e.target.checked,
+            // };
+            // sendProps(newFilters);
           }}
           defaultChecked
           color="default"
         />
+
+        <button onClick={() => {
+            debugger;
+            const newFilters = {
+                fromDate: startDate,
+                todate: endDate,
+                intensityFrom: intensityFrom,
+                intensityTo: intensityTo,
+                isCloudToCloud: isCloudToCloud,
+              };
+              sendProps(newFilters);
+        }}>Filter</button>
       </Toolbar>
     </AppBar>
   );

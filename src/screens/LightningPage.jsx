@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getLightningDataService } from "../shared-services/lightning-service";
 import { getLightningDataByFilters } from "../redux-state/reducers/lightningReducer";
+import {setFilters} from "../redux-state/reducers/filtersReducer"
 import MapComponent from "../components/map-component";
 import LightningDatatable from "../components/lightning-datatable";
 import BarGraph from "../components/bar-graph";
@@ -41,6 +42,7 @@ class LightningPage extends React.Component {
     this.setState({
       isLoading: true,
     });
+    await this.props.setDataFilters(filters)
     const lightningDataBulk = await getLightningDataService();
     const lightningData = await filterLightningData(lightningDataBulk, filters);
     await this.props.setLightningDataByFilters(lightningData);
@@ -123,8 +125,8 @@ class LightningPage extends React.Component {
 // Here Im Mapping Action into the components props , so that we can call action via props easily
 const mapDispatchToProps = (dispatch) => {
   return {
-    setLightningDataByFilters: (data) =>
-      dispatch(getLightningDataByFilters(data)),
+    setLightningDataByFilters: (data) => dispatch(getLightningDataByFilters(data)),
+    setDataFilters: (data) => dispatch(setFilters(data))
   };
 };
 
