@@ -14,7 +14,6 @@ import "leaflet-draw/dist/leaflet.draw.css";
 
 function MapComponent(props) {
   const _created = (e) => {
-    console.log(e.layer._latlngs[0] , "polygon let lngs");
     props.setBySelection(e.layer._latlngs[0]);
   }
   return (
