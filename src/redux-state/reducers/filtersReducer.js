@@ -7,6 +7,12 @@ const initialState = {
     intensityFrom: "4",
     intensityTo: "12",
     isCloudToCloud: true,
+    boundingBox:{
+      minX:0,
+      maxX:0,
+      minY:0,
+      maxY:0
+    }
   },
 };
 

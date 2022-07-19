@@ -3,12 +3,16 @@ import { connect } from "react-redux";
 import { getLightningDataService } from "../shared-services/lightning-service";
 import { getLightningDataByFilters } from "../redux-state/reducers/lightningReducer";
 import { setFilters } from "../redux-state/reducers/filtersReducer";
+import {getLightningDatatableByFilters} from "../redux-state/reducers/lightningDataTableReducer";
+import {setLoader} from "../redux-state/reducers/loaderReducer";
 import MapComponent from "../components/map-component";
 import LightningDatatable from "../components/lightning-datatable";
 import BarGraph from "../components/bar-graph";
 import {
   filterLightningData,
   filterHighLightedData,
+  filterDataByRows,
+  filterByPolygonSelection
 } from "../utils/filterLightningData";
 import TopNavBar from "../components/top-nav-bar";
 import { SyncLoader } from "react-spinners";
@@ -16,6 +20,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Button } from "@mui/material";
 
 class LightningPage extends React.Component {
+  coordniates=[4.7804, 46.5313];
   constructor(props) {
     // passing props into super will allow us to access props using ".this"
     super(props);
@@ -27,6 +32,8 @@ class LightningPage extends React.Component {
 
     this.setComponentData = this.setComponentData.bind(this);
     this.setHignlightedData = this.setHignlightedData.bind(this);
+    this.setDataByRowSelection = this.setDataByRowSelection.bind(this);
+    this.setComponentDataBySelection = this.setComponentDataBySelection.bind(this);
   }
 
   // An react life cycle method , this will be called once at the start of page load
@@ -46,55 +53,66 @@ class LightningPage extends React.Component {
 
   async setComponentData(filters) {
     let dataTableData = [];
-    this.setState({
-      isLoading: true,
-    });
+    this.props.setLoader(true);
     await this.props.setDataFilters(filters);
     const lightningDataBulk = await getLightningDataService();
     const lightningData = await filterLightningData(lightningDataBulk, filters);
-    await this.props.setLightningDataByFilters(lightningData);
     for (let data of lightningData) {
       dataTableData.push(data.properties);
     }
-    this.setState({
-      dataTableData: dataTableData,
-      mapData: lightningData,
-      isLoading: false,
-    });
+    await this.props.setLightningDataByFilters(lightningData);
+    await this.props.getLightningDatatableByFilters(dataTableData);
+    this.props.setLoader(false);
   }
 
   async setHignlightedData(dates) {
     let dataTableData = [];
-    this.setState({
-      isLoading: true,
-    });
+    this.props.setLoader(true);
     const date = new Date(dates[0]);
     const lightningDataBulk = await getLightningDataService();
     const filteredData = await filterHighLightedData(lightningDataBulk, date);
-    await this.props.setLightningDataByFilters(filteredData);
     for (let data of filteredData) {
       dataTableData.push(data.properties);
     }
-    this.setState({
-      dataTableData: dataTableData,
-      mapData: filteredData,
-      isLoading: false,
-    });
+    await this.props.setLightningDataByFilters(filteredData);
+    await this.props.getLightningDatatableByFilters(dataTableData);
+    this.props.setLoader(false);
+  }
+
+  async setDataByRowSelection(rows) {
+    this.props.setLoader(true);
+    const lightningDataBulk = await getLightningDataService();
+    const dataObj = await filterDataByRows(lightningDataBulk , rows);
+    await this.props.setLightningDataByFilters(dataObj.filteredData);
+    await this.props.getLightningDatatableByFilters(dataObj.dataTableData);
+    this.props.setLoader(false);
+  }
+
+  setComponentDataBySelection = async (polypoints) => {
+    let dataTableData = [];
+    this.props.setLoader(true);
+    const lightningDataBulk = await getLightningDataService();
+    const filteredData = filterByPolygonSelection(lightningDataBulk , polypoints);
+    for (let data of filteredData) {
+      dataTableData.push(data.properties);
+    }
+    await this.props.setLightningDataByFilters(filteredData);
+    await this.props.getLightningDatatableByFilters(dataTableData);
+    this.props.setLoader(false);
   }
 
   render() {
     // Render() method excecutes before ComponentDidMount and ComponentDidUpdate
     // here we can destruct the properties like , Props and State
-
     return (
       <div className="main">
-        {this.state.isLoading ? (
+        {this.props.loader ? (
           <div className="loader">
             <SyncLoader size={30} color={"#F37A24"}></SyncLoader>
           </div>
         ) : (
           <div>
-            {!this.state.isLoading && this.state.mapData.length > 0 ? (
+            {!this.props.loader && this.props.lightning.mainData.length > 0 ? (
               <div className="Lightning" id="wrapper">
                 <TopNavBar
                   filters={this.props.filters}
@@ -107,14 +125,17 @@ class LightningPage extends React.Component {
                         <td>
                           <div className="card">
                             <MapComponent
-                              positions={this.state.mapData}
+                            coords={this.coordniates}
+                              positions={this.props.lightning.mainData}
+                              setBySelection={this.setComponentDataBySelection}
                             ></MapComponent>
                           </div>
                         </td>
                         <td>
                           <div className="card">
                             <LightningDatatable
-                              dataSource={this.state.dataTableData}
+                              dataSource={this.props.datatableData.mainData}
+                              onRowSelection={this.setDataByRowSelection}
                             ></LightningDatatable>
                           </div>
                         </td>
@@ -127,7 +148,7 @@ class LightningPage extends React.Component {
                         <td>
                           <div className="card">
                             <BarGraph
-                              graphData={this.state.dataTableData}
+                              graphData={this.props.datatableData.mainData}
                               setHignlightedData={this.setHignlightedData}
                             ></BarGraph>
                           </div>
@@ -172,12 +193,14 @@ const mapDispatchToProps = (dispatch) => {
     setLightningDataByFilters: (data) =>
       dispatch(getLightningDataByFilters(data)),
     setDataFilters: (data) => dispatch(setFilters(data)),
+    getLightningDatatableByFilters:(data) => dispatch(getLightningDatatableByFilters(data)),
+    setLoader:(data) => dispatch(setLoader(data))
   };
 };
 
 // Here Im mapping State Data into the current component props data
 const mapStateToProps = (state) => {
-  return { lightning: state.lightning, filters: state.filters.mainData };
+  return { lightning: state.lightning, filters: state.filters.mainData , datatableData:state.datatable , loader:state.loader.isLoading  };
 };
 
 // Here Redux connect() helps us to connect both the action into the component

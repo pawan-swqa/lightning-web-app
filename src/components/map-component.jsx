@@ -13,19 +13,18 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 
 function MapComponent(props) {
-  const _created = (e) => console.log(e);
-
-  // function gg() {
-  //   Polygon.getBounds().contains()
-  // }
+  const _created = (e) => {
+    console.log(e.layer._latlngs[0] , "polygon let lngs");
+    props.setBySelection(e.layer._latlngs[0]);
+  }
   return (
-    <MapContainer center={[4.7804, 46.5313]} zoom={10} scrollWheelZoom={true}>
+    <MapContainer center={props.coords} zoom={10} scrollWheelZoom={true}>
       <FeatureGroup>
         <EditControl
           position="topright"
           onCreated={_created}
           draw={{
-            rectangle: false,
+            rectangle:false,
             circle: false,
             circlemarker: false,
             marker: false,
