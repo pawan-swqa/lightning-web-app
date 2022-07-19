@@ -18,6 +18,7 @@ import TopNavBar from "../components/top-nav-bar";
 import { SyncLoader } from "react-spinners";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Button } from "@mui/material";
+import { setGraphData } from "../redux-state/reducers/graphReducer";
 
 class LightningPage extends React.Component {
   coordniates=[4.7804, 46.5313];
@@ -62,6 +63,7 @@ class LightningPage extends React.Component {
     }
     await this.props.setLightningDataByFilters(lightningData);
     await this.props.getLightningDatatableByFilters(dataTableData);
+    await this.props.setGraphData(dataTableData);
     this.props.setLoader(false);
   }
 
@@ -76,6 +78,7 @@ class LightningPage extends React.Component {
     }
     await this.props.setLightningDataByFilters(filteredData);
     await this.props.getLightningDatatableByFilters(dataTableData);
+    await this.props.setGraphData(dataTableData);
     this.props.setLoader(false);
   }
 
@@ -85,6 +88,7 @@ class LightningPage extends React.Component {
     const dataObj = await filterDataByRows(lightningDataBulk , rows);
     await this.props.setLightningDataByFilters(dataObj.filteredData);
     await this.props.getLightningDatatableByFilters(dataObj.dataTableData);
+    await this.props.setGraphData(dataObj.dataTableData);
     this.props.setLoader(false);
   }
 
@@ -148,7 +152,7 @@ class LightningPage extends React.Component {
                         <td>
                           <div className="card">
                             <BarGraph
-                              graphData={this.props.datatableData.mainData}
+                              graphData={this.props.graphData}
                               setHignlightedData={this.setHignlightedData}
                             ></BarGraph>
                           </div>
@@ -190,17 +194,17 @@ class LightningPage extends React.Component {
 // Here Im Mapping Action into the components props , so that we can call action via props easily
 const mapDispatchToProps = (dispatch) => {
   return {
-    setLightningDataByFilters: (data) =>
-      dispatch(getLightningDataByFilters(data)),
-    setDataFilters: (data) => dispatch(setFilters(data)),
+    setLightningDataByFilters:(data) => dispatch(getLightningDataByFilters(data)),
+    setDataFilters:(data) => dispatch(setFilters(data)),
     getLightningDatatableByFilters:(data) => dispatch(getLightningDatatableByFilters(data)),
-    setLoader:(data) => dispatch(setLoader(data))
+    setLoader:(data) => dispatch(setLoader(data)),
+    setGraphData:(data) => dispatch(setGraphData(data))
   };
 };
 
 // Here Im mapping State Data into the current component props data
 const mapStateToProps = (state) => {
-  return { lightning: state.lightning, filters: state.filters.mainData , datatableData:state.datatable , loader:state.loader.isLoading  };
+  return { lightning: state.lightning, filters: state.filters.mainData , datatableData:state.datatable , loader:state.loader.isLoading , graphData:state.graph.mainData  };
 };
 
 // Here Redux connect() helps us to connect both the action into the component
